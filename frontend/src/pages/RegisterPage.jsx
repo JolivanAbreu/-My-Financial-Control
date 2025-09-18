@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import api from "../services/api";
-// Se estiver usando react-router-dom para navegação
 import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
@@ -10,18 +9,16 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  // Estados para feedback visual, em vez de usar alert()
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const navigate = useNavigate(); // Hook para redirecionar o usuário
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(""); // Limpa erros anteriores
-    setSuccess(""); // Limpa mensagens de sucesso anteriores
+    setError("");
+    setSuccess("");
 
-    // Validação simples para a senha
     if (senha.length < 6) {
       setError("A senha deve ter pelo menos 6 caracteres.");
       return;
@@ -34,18 +31,15 @@ function RegisterPage() {
         `Usuário ${response.data.nome} cadastrado com sucesso! Redirecionando...`
       );
 
-      // Limpa o formulário
       setNome("");
       setEmail("");
       setSenha("");
 
-      // Redireciona para a página de login após 2 segundos
       setTimeout(() => {
         navigate("/login");
       }, 2000);
     } catch (error) {
       console.error("Erro no registro:", error.response?.data);
-      // Usa a mensagem de erro da API ou uma mensagem padrão
       setError(
         error.response?.data?.error || "Ocorreu um erro. Tente novamente."
       );
@@ -53,20 +47,19 @@ function RegisterPage() {
   };
 
   return (
-    // Fundo com gradiente suave
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-sky-100 to-blue-200 p-4">
-      {/* Container do formulário com mais estilo */}
+      {}
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-xl transform transition-all hover:scale-[1.01]">
-        {/* Cabeçalho */}
+        {}
         <div className="text-center">
-          {/* Você pode adicionar sua logo aqui */}
-          {/* <img src="/logo.svg" alt="Logo" className="w-24 mx-auto mb-4" /> */}
+          {}
+          {}
           <h2 className="text-3xl font-bold text-gray-800">Crie sua Conta</h2>
           <p className="text-gray-500 mt-2">É rápido e fácil!</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Campo Nome com Ícone */}
+          {}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
@@ -95,7 +88,7 @@ function RegisterPage() {
             />
           </div>
 
-          {/* Campo Email com Ícone */}
+          {}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
@@ -124,7 +117,7 @@ function RegisterPage() {
             />
           </div>
 
-          {/* Campo Senha com Ícone */}
+          {}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
@@ -153,7 +146,7 @@ function RegisterPage() {
             />
           </div>
 
-          {/* Exibição de mensagens de erro ou sucesso */}
+          {}
           {error && (
             <p className="text-sm text-red-600 bg-red-100 p-2 rounded-lg text-center">
               {error}
@@ -165,7 +158,7 @@ function RegisterPage() {
             </p>
           )}
 
-          {/* Botão de Registrar */}
+          {}
           <div>
             <button
               type="submit"
@@ -176,7 +169,7 @@ function RegisterPage() {
           </div>
         </form>
 
-        {/* Link para a página de Login */}
+        {}
         <div className="text-center text-sm text-gray-500">
           Já tem uma conta?{" "}
           <Link

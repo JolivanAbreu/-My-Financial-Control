@@ -1,4 +1,5 @@
 // frontend/src/components/Modal.jsx
+
 import { FaTimes } from "react-icons/fa";
 
 function Modal({ isOpen, onClose, title, children }) {
@@ -7,11 +8,10 @@ function Modal({ isOpen, onClose, title, children }) {
   }
 
   return (
-    // Backdrop
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
-      {/* Modal content */}
+      {}
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md m-4 z-50">
-        {/* Modal header */}
+        {}
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-xl font-semibold">{title}</h3>
           <button
@@ -21,7 +21,7 @@ function Modal({ isOpen, onClose, title, children }) {
             <FaTimes size={20} />
           </button>
         </div>
-        {/* Modal body */}
+        {}
         <div className="p-6">{children}</div>
       </div>
     </div>

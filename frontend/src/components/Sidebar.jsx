@@ -1,4 +1,5 @@
 // frontend/src/components/Sidebar.jsx
+
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
@@ -37,7 +38,7 @@ function Sidebar() {
               Dashboard
             </Link>
           </li>
-          {/* 2. Adicione o novo link para Orçamentos aqui */}
+          {}
           <li className="p-1">
             <Link
               to="/budgets"
@@ -49,7 +50,7 @@ function Sidebar() {
           </li>
           <li className="p-1">
             {" "}
-            {/* Adicione este novo item */}
+            {}
             <Link
               to="/goals"
               className="flex items-center p-3 rounded-lg hover:bg-gray-700"

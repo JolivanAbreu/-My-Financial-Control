@@ -92,7 +92,7 @@ function DashboardPage() {
 
   return (
     <div>
-      {/* CABEÇALHO */}
+      {}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Painel</h1>
         <button

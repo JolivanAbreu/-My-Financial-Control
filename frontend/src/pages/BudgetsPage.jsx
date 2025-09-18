@@ -4,13 +4,13 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import Modal from "../components/Modal";
 import BudgetForm from "../components/BudgetForm";
-import { FaEdit, FaTrash } from "react-icons/fa"; // Importe os ícones
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 function BudgetsPage() {
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingBudget, setEditingBudget] = useState(null); // Estado para edição
+  const [editingBudget, setEditingBudget] = useState(null);
 
   const fetchBudgets = useCallback(async () => {
     try {

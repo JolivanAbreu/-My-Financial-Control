@@ -1,4 +1,5 @@
 // frontend/src/components/GoalForm.jsx
+
 import { useState, useEffect } from "react";
 import api from "../services/api";
 
@@ -26,8 +27,8 @@ function GoalForm({ onSuccess, initialData }) {
     const goalData = {
       titulo,
       valor_objetivo: valorObjetivo,
-      valor_atual: valorAtual || 0, // Se vazio, envia 0
-      prazo: prazo || null, // Se vazio, envia nulo
+      valor_atual: valorAtual || 0,
+      prazo: prazo || null,
     };
 
     try {
