@@ -1,11 +1,9 @@
 // backend/src/controllers/TransactionController.js
+
 const Transaction = require("../models/Transaction");
 
 class TransactionController {
-  // Listar todas as transações do usuário logado
-  // backend/src/controllers/TransactionController.js
 
-  // ...
   async index(req, res) {
     try {
       const transactions = await Transaction.findAll({
@@ -14,7 +12,6 @@ class TransactionController {
       });
       return res.json(transactions);
     } catch (error) {
-      // Linhas modificadas abaixo
       console.error('ERRO AO LISTAR TRANSAÇÕES:', error);
       return res.status(500).json({
         error: 'Erro ao listar transações.',
@@ -29,9 +26,8 @@ class TransactionController {
     try {
       const { tipo, categoria, valor, data, descricao } = req.body;
 
-      // Objeto que será salvo no banco
       const transactionData = {
-        user_id: req.userId, // req.userId vem do middleware de autenticação
+        user_id: req.userId,
         tipo,
         categoria,
         valor,
@@ -39,7 +35,6 @@ class TransactionController {
         descricao,
       };
 
-      // ADICIONE ESTE LOG PARA VERIFICAR OS DADOS
       console.log('--- DADOS A SEREM SALVOS NA TRANSAÇÃO ---');
       console.log(transactionData);
       console.log('-----------------------------------------');
@@ -59,19 +54,16 @@ class TransactionController {
   // NOVO MÉTODO: ATUALIZAR UMA TRANSAÇÃO
   async update(req, res) {
     try {
-      const { id } = req.params; // Pega o ID da transação pela URL
+      const { id } = req.params;
 
-      // Procura a transação pelo ID, mas garante que ela pertence ao usuário logado
       const transaction = await Transaction.findOne({
         where: { id, user_id: req.userId },
       });
 
-      // Se não encontrar, significa que a transação não existe ou não é do usuário
       if (!transaction) {
         return res.status(404).json({ error: "Transação não encontrada." });
       }
 
-      // Atualiza a transação com os novos dados
       const updatedTransaction = await transaction.update(req.body);
 
       return res.json(updatedTransaction);
@@ -99,7 +91,6 @@ class TransactionController {
 
       await transaction.destroy();
 
-      // Retorna uma resposta de sucesso sem conteúdo
       return res.status(204).send();
     } catch (error) {
       console.error("ERRO AO APAGAR TRANSAÇÃO:", error);

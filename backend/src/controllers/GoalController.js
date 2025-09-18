@@ -1,4 +1,5 @@
 // backend/src/controllers/GoalController.js
+
 const Goal = require('../models/Goal');
 
 class GoalController {

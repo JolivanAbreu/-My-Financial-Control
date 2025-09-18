@@ -1,6 +1,5 @@
 // backend/src/config/database.js
 
-// Adicione estas 2 linhas no topo do arquivo
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '..', '.env') });
 

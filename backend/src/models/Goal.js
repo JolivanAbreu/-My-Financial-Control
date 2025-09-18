@@ -1,4 +1,5 @@
 // backend/src/models/Goal.js
+
 const { Model, DataTypes } = require('sequelize');
 
 class Goal extends Model {

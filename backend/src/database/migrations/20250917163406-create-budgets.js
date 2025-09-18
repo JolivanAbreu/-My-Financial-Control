@@ -42,7 +42,6 @@ module.exports = {
       },
     });
 
-    // Adiciona um índice único para garantir que não haja duplicatas
     await queryInterface.addIndex('budgets', ['user_id', 'categoria', 'mes', 'ano'], {
       unique: true,
       name: 'user_category_month_year_unique',

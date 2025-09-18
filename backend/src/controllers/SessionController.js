@@ -24,7 +24,7 @@ class SessionController {
 
       // 3. Se tudo estiver certo, gera o Token JWT
       const token = jwt.sign({ id }, process.env.APP_SECRET, {
-        expiresIn: "7d", // O token expira em 7 dias
+        expiresIn: "7d",
       });
 
       return res.json({

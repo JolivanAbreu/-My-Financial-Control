@@ -1,4 +1,4 @@
-// backend/src/routes/routes.js (VERSÃO FINAL CORRIGIDA)
+// backend/src/routes/routes.js
 const { Router } = require("express");
 
 // Middlewares
@@ -18,7 +18,6 @@ routes.post("/register", UserController.store);
 routes.post("/login", SessionController.store);
 
 // --- Barreira de Autenticação ---
-// Todas as rotas definidas ABAIXO desta linha exigirão um token válido.
 routes.use(authMiddleware);
 
 // --- Rotas Privadas (PRECISAM de token) ---

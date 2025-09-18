@@ -1,4 +1,5 @@
 // backend/src/models/Budget.js
+
 const { Model, DataTypes } = require('sequelize');
 
 class Budget extends Model {

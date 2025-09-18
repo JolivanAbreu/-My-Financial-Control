@@ -1,4 +1,5 @@
 // backend/src/controllers/BudgetController.js
+
 const { Op } = require('sequelize');
 const Budget = require('../models/Budget');
 const Transaction = require('../models/Transaction');
@@ -26,7 +27,7 @@ class BudgetController {
     async index(req, res) {
         try {
             const user_id = req.userId;
-            const { mes, ano } = req.query; // Permite filtrar por mês/ano (ex: /budgets?mes=9&ano=2025)
+            const { mes, ano } = req.query;
 
             const whereCondition = { user_id };
             if (mes && ano) {

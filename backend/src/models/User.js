@@ -9,8 +9,8 @@ class User extends Model {
       {
         nome: DataTypes.STRING,
         email: DataTypes.STRING,
-        senha: DataTypes.VIRTUAL, // Campo virtual, não será salvo no banco
-        senha_hash: DataTypes.STRING, // Este campo sim será salvo
+        senha: DataTypes.VIRTUAL,
+        senha_hash: DataTypes.STRING,
       },
       {
         sequelize,
@@ -18,7 +18,6 @@ class User extends Model {
       }
     );
 
-    // Hook que é executado antes de um novo usuário ser salvo
     this.addHook("beforeSave", async (user) => {
       if (user.senha) {
         user.senha_hash = await bcrypt.hash(user.senha, 8);
@@ -29,7 +28,6 @@ class User extends Model {
   }
 
   static associate(models) {
-    // Um Usuário tem muitas Transações
     this.hasMany(models.Transaction, {
       foreignKey: "user_id",
       as: "transactions",

@@ -1,4 +1,5 @@
 // backend/src/middlewares/auth.js
+
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
@@ -14,7 +15,7 @@ module.exports = async (req, res, next) => {
   try {
     const decoded = await promisify(jwt.verify)(token, process.env.APP_SECRET);
 
-    req.userId = decoded.id; // Esta é a linha crucial
+    req.userId = decoded.id;
 
     return next();
   } catch (err) {
