@@ -36,6 +36,8 @@ routes.delete("/transactions/:id", TransactionController.destroy);
 // Rotas de Orçamentos
 routes.post('/budgets', BudgetController.store);
 routes.get('/budgets', BudgetController.index);
+routes.put('/budgets/:id', BudgetController.update); 
+routes.delete('/budgets/:id', BudgetController.destroy);
 
 // Rotas de Metas
 routes.post('/goals', GoalController.store);

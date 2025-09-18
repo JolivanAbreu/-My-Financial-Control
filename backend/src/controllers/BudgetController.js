@@ -64,6 +64,41 @@ class BudgetController {
             return res.status(500).json({ error: 'Falha ao listar orçamentos.', details: error.message });
         }
     }
+
+    // NOVO MÉTODO: ATUALIZAR UM ORÇAMENTO
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const budget = await Budget.findOne({ where: { id, user_id: req.userId } });
+
+            if (!budget) {
+                return res.status(404).json({ error: 'Orçamento não encontrado.' });
+            }
+
+            const updatedBudget = await budget.update(req.body);
+            return res.json(updatedBudget);
+        } catch (error) {
+            return res.status(500).json({ error: 'Falha ao atualizar orçamento.', details: error.message });
+        }
+    }
+
+    // NOVO MÉTODO: APAGAR UM ORÇAMENTO
+    async destroy(req, res) {
+        try {
+            const { id } = req.params;
+            const budget = await Budget.findOne({ where: { id, user_id: req.userId } });
+
+            if (!budget) {
+                return res.status(404).json({ error: 'Orçamento não encontrado.' });
+            }
+
+            await budget.destroy();
+            return res.status(204).send();
+        } catch (error) {
+            return res.status(500).json({ error: 'Falha ao apagar orçamento.', details: error.message });
+        }
+    }
+
 }
 
 module.exports = new BudgetController();

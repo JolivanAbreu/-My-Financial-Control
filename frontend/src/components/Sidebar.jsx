@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
-  FaWallet,
+  FaPiggyBank,
   FaBullseye,
   FaSignOutAlt,
 } from "react-icons/fa";
@@ -37,7 +37,27 @@ function Sidebar() {
               Dashboard
             </Link>
           </li>
-          {/* Adicionar os links para Orçamentos e Metas aqui */}
+          {/* 2. Adicione o novo link para Orçamentos aqui */}
+          <li className="p-1">
+            <Link
+              to="/budgets"
+              className="flex items-center p-3 rounded-lg hover:bg-gray-700"
+            >
+              <FaPiggyBank className="mr-3" />
+              Orçamentos
+            </Link>
+          </li>
+          <li className="p-1">
+            {" "}
+            {/* Adicione este novo item */}
+            <Link
+              to="/goals"
+              className="flex items-center p-3 rounded-lg hover:bg-gray-700"
+            >
+              <FaBullseye className="mr-3" />
+              Metas
+            </Link>
+          </li>
         </ul>
       </nav>
       <div className="p-5 border-t border-gray-700">

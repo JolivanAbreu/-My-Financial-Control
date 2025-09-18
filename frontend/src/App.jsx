@@ -1,5 +1,4 @@
-// frontend/src/App.jsx (versão com MainLayout)
-
+// frontend/src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -7,6 +6,8 @@ import MainLayout from "./components/MainLayout";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import BudgetsPage from "./pages/BudgetsPage";
+import GoalsPage from './pages/GoalsPage';
 
 function App() {
   return (
@@ -18,10 +19,11 @@ function App() {
 
       {/* Rotas Privadas/Protegidas */}
       <Route element={<ProtectedRoute />}>
-        {/* 2. Envolva as páginas privadas com o MainLayout */}
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          {/* Adicionaremos Orçamentos e Metas aqui */}
+          {/* Verifique se a rota abaixo existe */}
+          <Route path="/budgets" element={<BudgetsPage />} />
+          <Route path="/goals" element={<GoalsPage />} /> 
         </Route>
       </Route>
     </Routes>

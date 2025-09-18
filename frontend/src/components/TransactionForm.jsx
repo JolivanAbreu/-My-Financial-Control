@@ -1,25 +1,51 @@
-// frontend/src/components/TransactionForm.jsx
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../services/api";
 
-function TransactionForm({ onSuccess }) {
+function TransactionForm({ onSuccess, initialData }) {
   const [tipo, setTipo] = useState("despesa");
   const [valor, setValor] = useState("");
   const [categoria, setCategoria] = useState("");
   const [data, setData] = useState(new Date().toISOString().split("T")[0]);
   const [descricao, setDescricao] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (initialData) {
+      setTipo(initialData.tipo);
+      setValor(initialData.valor);
+      setCategoria(initialData.categoria);
+      setData(new Date(initialData.data).toISOString().split("T")[0]);
+      setDescricao(initialData.descricao || "");
+    } else {
+      setTipo("despesa");
+      setValor("");
+      setCategoria("");
+      setData(new Date().toISOString().split("T")[0]);
+      setDescricao("");
+    }
+  }, [initialData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    const transactionData = {
+      tipo,
+      valor: Number(valor),
+      categoria,
+      data,
+      descricao,
+    };
+
     try {
-      const response = await api.post("/transactions", {
-        tipo,
-        valor,
-        categoria,
-        data,
-        descricao,
-      });
+      let response;
+      if (initialData) {
+        response = await api.put(
+          `/transactions/${initialData.id}`,
+          transactionData
+        );
+      } else {
+        response = await api.post("/transactions", transactionData);
+      }
       alert("Transação salva com sucesso!");
       onSuccess(response.data);
     } catch (error) {
@@ -27,6 +53,8 @@ function TransactionForm({ onSuccess }) {
       alert(
         `Erro ao salvar: ${error.response?.data?.error || "Tente novamente"}`
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -53,6 +81,7 @@ function TransactionForm({ onSuccess }) {
           required
           value={valor}
           onChange={(e) => setValor(e.target.value)}
+          placeholder="0,00"
           className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md"
         />
       </div>
@@ -65,6 +94,7 @@ function TransactionForm({ onSuccess }) {
           required
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
+          placeholder="Ex: Supermercado"
           className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md"
         />
       </div>
@@ -80,21 +110,27 @@ function TransactionForm({ onSuccess }) {
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700">
-          Descrição
+          Descrição (Opcional)
         </label>
         <input
           type="text"
           value={descricao}
           onChange={(e) => setDescricao(e.target.value)}
+          placeholder="Ex: Compras do mês"
           className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md"
         />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end pt-2">
         <button
           type="submit"
-          className="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          disabled={isSubmitting}
+          className="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
         >
-          Salvar Transação
+          {isSubmitting
+            ? "Salvando..."
+            : initialData
+            ? "Atualizar Transação"
+            : "Salvar Transação"}
         </button>
       </div>
     </form>
