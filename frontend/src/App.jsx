@@ -1,5 +1,6 @@
 // frontend/src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./components/MainLayout";
@@ -11,6 +12,7 @@ import GoalsPage from './pages/GoalsPage';
 
 function App() {
   return (
+    <Toaster position="top-right" />,
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/login" element={<LoginPage />} />

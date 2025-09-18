@@ -1,6 +1,6 @@
 // frontend/src/components/Sidebar.jsx
 
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaPiggyBank,
@@ -18,6 +18,11 @@ function Sidebar() {
     navigate("/login");
   };
 
+  const navLinkClasses = ({ isActive }) =>
+    `flex items-center p-3 rounded-lg hover:bg-gray-700 ${
+      isActive ? "bg-gray-700" : ""
+    }`;
+
   return (
     <div className="w-64 h-screen bg-gray-800 text-white flex flex-col">
       <div className="p-5 text-2xl font-bold border-b border-gray-700">
@@ -30,34 +35,22 @@ function Sidebar() {
       <nav className="flex-grow">
         <ul>
           <li className="p-1">
-            <Link
-              to="/dashboard"
-              className="flex items-center p-3 rounded-lg hover:bg-gray-700"
-            >
+            <NavLink to="/dashboard" className={navLinkClasses}>
               <FaTachometerAlt className="mr-3" />
               Dashboard
-            </Link>
+            </NavLink>
           </li>
-          {}
           <li className="p-1">
-            <Link
-              to="/budgets"
-              className="flex items-center p-3 rounded-lg hover:bg-gray-700"
-            >
+            <NavLink to="/budgets" className={navLinkClasses}>
               <FaPiggyBank className="mr-3" />
               Orçamentos
-            </Link>
+            </NavLink>
           </li>
           <li className="p-1">
-            {" "}
-            {}
-            <Link
-              to="/goals"
-              className="flex items-center p-3 rounded-lg hover:bg-gray-700"
-            >
+            <NavLink to="/goals" className={navLinkClasses}>
               <FaBullseye className="mr-3" />
               Metas
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

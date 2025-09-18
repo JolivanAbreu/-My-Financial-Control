@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function GoalForm({ onSuccess, initialData }) {
   const [titulo, setTitulo] = useState("");
@@ -31,18 +32,21 @@ function GoalForm({ onSuccess, initialData }) {
       prazo: prazo || null,
     };
 
-    try {
-      const response = initialData
-        ? await api.put(`/goals/${initialData.id}`, goalData)
-        : await api.post("/goals", goalData);
+    const promise = initialData
+      ? api.put(`/goals/${initialData.id}`, goalData)
+      : api.post("/goals", goalData);
 
-      alert("Meta salva com sucesso!");
+    try {
+      await toast.promise(promise, {
+        loading: "Salvando...",
+        success: "Meta salva com sucesso!",
+        error: (err) => err.response?.data?.error || "Falha ao salvar a meta.",
+      });
+
+      const response = await promise;
       onSuccess(response.data);
     } catch (error) {
       console.error("Erro ao salvar meta:", error);
-      alert(
-        `Erro ao salvar: ${error.response?.data?.error || "Tente novamente"}`
-      );
     }
   };
 

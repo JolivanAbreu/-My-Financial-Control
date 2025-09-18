@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 const meses = [
   { nome: "Janeiro", valor: 1 },
@@ -42,18 +43,22 @@ function BudgetForm({ onSuccess, initialData }) {
       ano: Number(ano),
     };
 
-    try {
-      const response = initialData
-        ? await api.put(`/budgets/${initialData.id}`, budgetData)
-        : await api.post("/budgets", budgetData);
+    const promise = initialData
+      ? api.put(`/budgets/${initialData.id}`, budgetData)
+      : api.post("/budgets", budgetData);
 
-      alert("Orçamento salvo com sucesso!");
+    try {
+      await toast.promise(promise, {
+        loading: "Salvando...",
+        success: "Orçamento salvo com sucesso!",
+        error: (err) =>
+          err.response?.data?.error || "Falha ao salvar o orçamento.",
+      });
+
+      const response = await promise;
       onSuccess(response.data);
     } catch (error) {
       console.error("Erro ao salvar orçamento:", error);
-      alert(
-        `Erro ao salvar: ${error.response?.data?.error || "Tente novamente"}`
-      );
     }
   };
 

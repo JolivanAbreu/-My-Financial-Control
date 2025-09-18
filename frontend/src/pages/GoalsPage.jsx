@@ -5,6 +5,7 @@ import api from "../services/api";
 import Modal from "../components/Modal";
 import GoalForm from "../components/GoalForm";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function GoalsPage() {
   const [goals, setGoals] = useState([]);
@@ -54,12 +55,16 @@ function GoalsPage() {
 
   const handleDelete = async (goalId) => {
     if (window.confirm("Tem certeza que deseja apagar esta meta?")) {
+      const promise = api.delete(`/goals/${goalId}`);
       try {
-        await api.delete(`/goals/${goalId}`);
+        await toast.promise(promise, {
+          loading: "Apagando...",
+          success: "Meta apagada com sucesso!",
+          error: "Não foi possível apagar a meta.",
+        });
         setGoals((current) => current.filter((g) => g.id !== goalId));
-        alert("Meta apagada com sucesso!");
       } catch (error) {
-        alert("Não foi possível apagar a meta.");
+        console.error("Erro ao apagar meta:", error);
       }
     }
   };

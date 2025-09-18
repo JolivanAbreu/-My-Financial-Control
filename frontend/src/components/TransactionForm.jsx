@@ -1,5 +1,8 @@
+// frontend/src/components/TransactionForm.jsx
+
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function TransactionForm({ onSuccess, initialData }) {
   const [tipo, setTipo] = useState("despesa");
@@ -7,9 +10,9 @@ function TransactionForm({ onSuccess, initialData }) {
   const [categoria, setCategoria] = useState("");
   const [data, setData] = useState(new Date().toISOString().split("T")[0]);
   const [descricao, setDescricao] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    // Reseta o formulário quando o modal é aberto para uma nova transação
     if (initialData) {
       setTipo(initialData.tipo);
       setValor(initialData.valor);
@@ -27,7 +30,6 @@ function TransactionForm({ onSuccess, initialData }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
     const transactionData = {
       tipo,
       valor: Number(valor),
@@ -36,25 +38,22 @@ function TransactionForm({ onSuccess, initialData }) {
       descricao,
     };
 
+    const promise = initialData
+      ? api.put(`/transactions/${initialData.id}`, transactionData)
+      : api.post("/transactions", transactionData);
+
     try {
-      let response;
-      if (initialData) {
-        response = await api.put(
-          `/transactions/${initialData.id}`,
-          transactionData
-        );
-      } else {
-        response = await api.post("/transactions", transactionData);
-      }
-      alert("Transação salva com sucesso!");
+      await toast.promise(promise, {
+        loading: "Salvando...",
+        success: "Transação salva com sucesso!",
+        error: (err) =>
+          err.response?.data?.error || "Falha ao salvar a transação.",
+      });
+
+      const response = await promise;
       onSuccess(response.data);
     } catch (error) {
       console.error("Erro ao salvar transação:", error);
-      alert(
-        `Erro ao salvar: ${error.response?.data?.error || "Tente novamente"}`
-      );
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -123,14 +122,9 @@ function TransactionForm({ onSuccess, initialData }) {
       <div className="flex justify-end pt-2">
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
         >
-          {isSubmitting
-            ? "Salvando..."
-            : initialData
-            ? "Atualizar Transação"
-            : "Salvar Transação"}
+          {initialData ? "Atualizar Transação" : "Salvar Transação"}
         </button>
       </div>
     </form>

@@ -5,6 +5,7 @@ import api from "../services/api";
 import Modal from "../components/Modal";
 import BudgetForm from "../components/BudgetForm";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function BudgetsPage() {
   const [budgets, setBudgets] = useState([]);
@@ -46,12 +47,16 @@ function BudgetsPage() {
 
   const handleDelete = async (budgetId) => {
     if (window.confirm("Tem certeza que deseja apagar este orçamento?")) {
+      const promise = api.delete(`/budgets/${budgetId}`);
       try {
-        await api.delete(`/budgets/${budgetId}`);
+        await toast.promise(promise, {
+          loading: "Apagando...",
+          success: "Orçamento apagado com sucesso!",
+          error: "Não foi possível apagar o orçamento.",
+        });
         setBudgets((current) => current.filter((b) => b.id !== budgetId));
-        alert("Orçamento apagado com sucesso!");
       } catch (error) {
-        alert("Não foi possível apagar o orçamento.");
+        console.error("Erro ao apagar orçamento:", error);
       }
     }
   };

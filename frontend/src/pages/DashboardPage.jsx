@@ -1,9 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
-import api from '../services/api';
-import Modal from '../components/Modal';
-import TransactionForm from '../components/TransactionForm';
-import ExpensesChart from '../components/ExpensesChart';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useEffect, useState, useCallback } from "react";
+import api from "../services/api";
+import Modal from "../components/Modal";
+import TransactionForm from "../components/TransactionForm";
+import ExpensesChart from "../components/ExpensesChart";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function DashboardPage() {
   const [transactions, setTransactions] = useState([]);
@@ -14,11 +15,11 @@ function DashboardPage() {
   const fetchTransactions = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await api.get('/transactions');
+      const response = await api.get("/transactions");
       setTransactions(response.data);
     } catch (error) {
-      console.error('Falha ao buscar transações:', error);
-      alert('Não foi possível carregar as transações.');
+      console.error("Falha ao buscar transações:", error);
+      toast.error("Não foi possível carregar as transações.");
     } finally {
       setLoading(false);
     }
@@ -35,18 +36,21 @@ function DashboardPage() {
 
   const handleDelete = async (transactionId) => {
     const isConfirmed = window.confirm(
-      'Tem certeza que deseja apagar esta transação?'
+      "Tem certeza que deseja apagar esta transação?"
     );
     if (isConfirmed) {
+      const promise = api.delete(`/transactions/${transactionId}`);
       try {
-        await api.delete(`/transactions/${transactionId}`);
+        await toast.promise(promise, {
+          loading: "Apagando...",
+          success: "Transação apagada com sucesso!",
+          error: "Não foi possível apagar a transação.",
+        });
         setTransactions((current) =>
           current.filter((t) => t.id !== transactionId)
         );
-        alert('Transação apagada com sucesso!');
       } catch (error) {
-        console.error('Erro ao apagar transação:', error);
-        alert('Não foi possível apagar a transação.');
+        console.error("Erro ao apagar transação:", error);
       }
     }
   };
@@ -70,15 +74,15 @@ function DashboardPage() {
   };
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     }).format(value);
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      timeZone: 'UTC',
+    return new Date(dateString).toLocaleDateString("pt-BR", {
+      timeZone: "UTC",
     });
   };
 
@@ -108,7 +112,7 @@ function DashboardPage() {
         isOpen={isModalOpen}
         onClose={closeModal}
         title={
-          editingTransaction ? 'Editar Transação' : 'Adicionar Nova Transação'
+          editingTransaction ? "Editar Transação" : "Adicionar Nova Transação"
         }
       >
         <TransactionForm
@@ -149,12 +153,10 @@ function DashboardPage() {
                   <td className="py-3 px-3">{t.descricao}</td>
                   <td
                     className={`py-3 px-3 text-right font-semibold ${
-                      t.tipo === 'receita'
-                        ? 'text-green-600'
-                        : 'text-red-600'
+                      t.tipo === "receita" ? "text-green-600" : "text-red-600"
                     }`}
                   >
-                    {t.tipo === 'receita' ? '+' : '-'} {formatCurrency(t.valor)}
+                    {t.tipo === "receita" ? "+" : "-"} {formatCurrency(t.valor)}
                   </td>
                   <td className="py-3 px-3 text-center">
                     <button
