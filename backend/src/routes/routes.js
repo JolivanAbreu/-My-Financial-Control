@@ -1,0 +1,47 @@
+// backend/src/routes/routes.js (VERSÃO FINAL CORRIGIDA)
+const { Router } = require("express");
+
+// Middlewares
+const authMiddleware = require("../middlewares/auth");
+
+// Controllers
+const UserController = require("../controllers/UserController");
+const SessionController = require("../controllers/SessionController");
+const TransactionController = require("../controllers/TransactionController");
+const BudgetController = require('../controllers/BudgetController');
+const GoalController = require('../controllers/GoalController');
+
+const routes = new Router();
+
+// --- Rotas Públicas (NÃO precisam de token) ---
+routes.post("/register", UserController.store);
+routes.post("/login", SessionController.store);
+
+// --- Barreira de Autenticação ---
+// Todas as rotas definidas ABAIXO desta linha exigirão um token válido.
+routes.use(authMiddleware);
+
+// --- Rotas Privadas (PRECISAM de token) ---
+routes.get("/dashboard", (req, res) => {
+  return res.json({
+    message: `Bem-vindo ao Dashboard, usuário com ID: ${req.userId}!`,
+  });
+});
+
+// Rotas de Transações
+routes.get("/transactions", TransactionController.index);
+routes.post("/transactions", TransactionController.store);
+routes.put("/transactions/:id", TransactionController.update);
+routes.delete("/transactions/:id", TransactionController.destroy);
+
+// Rotas de Orçamentos
+routes.post('/budgets', BudgetController.store);
+routes.get('/budgets', BudgetController.index);
+
+// Rotas de Metas
+routes.post('/goals', GoalController.store);
+routes.get('/goals', GoalController.index);
+routes.put('/goals/:id', GoalController.update);
+routes.delete('/goals/:id', GoalController.destroy);
+
+module.exports = routes;

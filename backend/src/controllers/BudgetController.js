@@ -1,0 +1,68 @@
+// backend/src/controllers/BudgetController.js
+const { Op } = require('sequelize');
+const Budget = require('../models/Budget');
+const Transaction = require('../models/Transaction');
+
+class BudgetController {
+    // Criar um novo orçamento
+    async store(req, res) {
+        try {
+            const { categoria, limite, mes, ano } = req.body;
+            const user_id = req.userId;
+
+            const budgetExists = await Budget.findOne({ where: { user_id, categoria, mes, ano } });
+            if (budgetExists) {
+                return res.status(400).json({ error: 'Orçamento já cadastrado para esta categoria e mês.' });
+            }
+
+            const budget = await Budget.create({ user_id, categoria, limite, mes, ano });
+            return res.status(201).json(budget);
+        } catch (error) {
+            return res.status(500).json({ error: 'Falha ao criar orçamento.', details: error.message });
+        }
+    }
+
+    // Listar orçamentos do usuário
+    async index(req, res) {
+        try {
+            const user_id = req.userId;
+            const { mes, ano } = req.query; // Permite filtrar por mês/ano (ex: /budgets?mes=9&ano=2025)
+
+            const whereCondition = { user_id };
+            if (mes && ano) {
+                whereCondition.mes = mes;
+                whereCondition.ano = ano;
+            }
+
+            const budgets = await Budget.findAll({ where: whereCondition });
+
+            // Para cada orçamento, calcular o total gasto
+            const budgetsComGastos = await Promise.all(
+                budgets.map(async (budget) => {
+                    const inicioDoMes = new Date(budget.ano, budget.mes - 1, 1);
+                    const fimDoMes = new Date(budget.ano, budget.mes, 0);
+
+                    const totalGasto = await Transaction.sum('valor', {
+                        where: {
+                            user_id,
+                            categoria: budget.categoria,
+                            tipo: 'despesa',
+                            data: { [Op.between]: [inicioDoMes, fimDoMes] },
+                        },
+                    });
+
+                    return {
+                        ...budget.toJSON(),
+                        gasto_atual: totalGasto || 0,
+                    };
+                })
+            );
+
+            return res.json(budgetsComGastos);
+        } catch (error) {
+            return res.status(500).json({ error: 'Falha ao listar orçamentos.', details: error.message });
+        }
+    }
+}
+
+module.exports = new BudgetController();
