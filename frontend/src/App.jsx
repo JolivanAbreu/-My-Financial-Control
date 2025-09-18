@@ -1,9 +1,9 @@
 // frontend/src/App.jsx (versão com MainLayout)
+
 import { Routes, Route, Navigate } from "react-router-dom";
 
-// Componentes e Páginas
 import ProtectedRoute from "./components/ProtectedRoute";
-import MainLayout from "./components/MainLayout"; // 1. Importe o MainLayout
+import MainLayout from "./components/MainLayout";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";

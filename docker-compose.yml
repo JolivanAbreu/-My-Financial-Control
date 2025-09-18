@@ -1,10 +1,9 @@
 version: '3.8'
 
 services:
-  # Serviço da base de dados MariaDB
   database:
-    image: mariadb:10.8 # Imagem oficial do MariaDB
-    container_name: mariadb-financeiro # Nome do container
+    image: mariadb:10.8
+    container_name: mariadb-financeiro
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: super_secret_root_password
@@ -12,10 +11,8 @@ services:
       MARIADB_USER: financas_user
       MARIADB_PASSWORD: super_secret_password
     ports:
-      # Mapeia a porta 3306 do container para a porta 3306 da sua máquina
       - "3306:3306"
     volumes:
-      # Garante que os dados sejam salvos mesmo se o container for removido
       - mariadb_data:/var/lib/mysql
 
 volumes:

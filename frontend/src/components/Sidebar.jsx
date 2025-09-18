@@ -37,7 +37,7 @@ function Sidebar() {
               Dashboard
             </Link>
           </li>
-          {/* Adicionaremos os links para Orçamentos e Metas aqui no futuro */}
+          {/* Adicionar os links para Orçamentos e Metas aqui */}
         </ul>
       </nav>
       <div className="p-5 border-t border-gray-700">
