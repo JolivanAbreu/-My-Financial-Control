@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "db:migrate": "node node_modules/sequelize-cli/bin/sequelize db:migrate"
+    "db:migrate": "node node_modules/sequelize/bin/sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
