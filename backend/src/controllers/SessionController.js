@@ -8,13 +8,11 @@ class SessionController {
     try {
       const { email, senha } = req.body;
 
-      // 1. Verifica se o usuário existe
       const user = await User.findOne({ where: { email } });
       if (!user) {
         return res.status(401).json({ error: "Usuário não encontrado." });
       }
 
-      // 2. Compara a senha enviada com a senha_hash no banco
       const isPasswordCorrect = await bcrypt.compare(senha, user.senha_hash);
       if (!isPasswordCorrect) {
         return res.status(401).json({ error: "Senha incorreta." });
@@ -22,7 +20,6 @@ class SessionController {
 
       const { id, nome } = user;
 
-      // 3. Se tudo estiver certo, gera o Token JWT
       const token = jwt.sign({ id }, process.env.APP_SECRET, {
         expiresIn: "7d",
       });

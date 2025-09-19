@@ -1,13 +1,23 @@
 // backend/src/controllers/TransactionController.js
 
+const { Op } = require('sequelize');
 const Transaction = require("../models/Transaction");
 
 class TransactionController {
 
   async index(req, res) {
     try {
+      const { startDate, endDate } = req.query;
+      const whereCondition = { user_id: req.userId };
+
+      if (startDate && endDate) {
+        whereCondition.data = {
+          [Op.between]: [new Date(startDate), new Date(endDate)],
+        };
+      }
+
       const transactions = await Transaction.findAll({
-        where: { user_id: req.userId },
+        where: whereCondition,
         order: [['data', 'DESC']],
       });
       return res.json(transactions);
@@ -19,9 +29,7 @@ class TransactionController {
       });
     }
   }
-  // ...
 
-  // Criar uma nova transação
   async store(req, res) {
     try {
       const { tipo, categoria, valor, data, descricao } = req.body;
@@ -51,7 +59,6 @@ class TransactionController {
     }
   }
 
-  // NOVO MÉTODO: ATUALIZAR UMA TRANSAÇÃO
   async update(req, res) {
     try {
       const { id } = req.params;
@@ -76,7 +83,6 @@ class TransactionController {
     }
   }
 
-  // NOVO MÉTODO: APAGAR UMA TRANSAÇÃO
   async destroy(req, res) {
     try {
       const { id } = req.params;

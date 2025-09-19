@@ -5,6 +5,7 @@ import {
   FaTachometerAlt,
   FaPiggyBank,
   FaBullseye,
+  FaChartBar,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
@@ -52,6 +53,12 @@ function Sidebar() {
               Metas
             </NavLink>
           </li>
+          <li className="p-1"> {}
+      <NavLink to="/reports" className={navLinkClasses}>
+        <FaChartBar className="mr-3" />
+        Relatórios
+      </NavLink>
+    </li>
         </ul>
       </nav>
       <div className="p-5 border-t border-gray-700">

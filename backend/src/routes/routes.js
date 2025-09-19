@@ -13,14 +13,14 @@ const GoalController = require('../controllers/GoalController');
 
 const routes = new Router();
 
-// --- Rotas Públicas (NÃO precisam de token) ---
+// Rotas Públicas (NÃO precisam de token)
 routes.post("/register", UserController.store);
 routes.post("/login", SessionController.store);
 
-// --- Barreira de Autenticação ---
+// Barreira de Autenticação
 routes.use(authMiddleware);
 
-// --- Rotas Privadas (PRECISAM de token) ---
+// Rotas Privadas (PRECISAM de token)
 routes.get("/dashboard", (req, res) => {
   return res.json({
     message: `Bem-vindo ao Dashboard, usuário com ID: ${req.userId}!`,
