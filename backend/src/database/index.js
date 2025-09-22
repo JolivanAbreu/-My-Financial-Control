@@ -1,12 +1,15 @@
 // backend/src/database/index.js
 
 const Sequelize = require('sequelize');
-const dbConfig = require('../config/database');
+const dbConfigObject = require('../config/database');
 
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
 const Budget = require('../models/Budget');
 const Goal = require('../models/Goal');
+
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = dbConfigObject[env];
 
 const models = [User, Transaction, Budget, Goal];
 

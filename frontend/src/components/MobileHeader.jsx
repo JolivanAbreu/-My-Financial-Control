@@ -1,6 +1,6 @@
 // frontend/src/components/MobileHeader.jsx
 
-import { FaBars } from 'react-icons/fa';
+import { FaBars } from "react-icons/fa";
 
 function MobileHeader({ onMenuClick }) {
   return (

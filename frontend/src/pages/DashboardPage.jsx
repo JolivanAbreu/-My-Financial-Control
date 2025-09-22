@@ -12,7 +12,6 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 
-// Array de meses para o filtro
 const meses = [
   { nome: "Janeiro", valor: 1 },
   { nome: "Fevereiro", valor: 2 },
@@ -27,7 +26,7 @@ const meses = [
   { nome: "Novembro", valor: 11 },
   { nome: "Dezembro", valor: 12 },
 ];
-// Gera uma lista de anos para o filtro
+
 const anos = Array.from(
   { length: 5 },
   (_, i) => new Date().getFullYear() - 2 + i
